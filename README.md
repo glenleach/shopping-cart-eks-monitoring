@@ -9,7 +9,7 @@ This repository serves as the **master controller** for multiple EKS-based monit
 
 A Kubernetes microservices demo application deployed on Amazon EKS, featuring full observability with Prometheus, Grafana, and exporters.
 
-### 2. [nodejs-eks-monitoring](./nodejs-eks-monitoring)
+### 2. [nodejs-eks-monitoring](https://github.com/glenleach/nodejs-eks-monitoring)
 
 A standalone Node.js application deployed on EKS, integrated with Prometheus and Grafana for monitoring and alerting.
 
