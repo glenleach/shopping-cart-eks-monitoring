@@ -5,7 +5,7 @@ This repository serves as the **master controller** for multiple EKS-based monit
 
 ## 📁 Included Subprojects
 
-### 1. [shopping-cart-eks-monitoring](./shopping-cart-eks-monitoring)
+### 1. [shopping-cart-eks-monitoring](https://github.com/glenleach/shopping-cart-eks-monitoring)
 
 A Kubernetes microservices demo application deployed on Amazon EKS, featuring full observability with Prometheus, Grafana, and exporters.
 
