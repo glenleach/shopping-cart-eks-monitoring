@@ -1,0 +1,6 @@
+[submodule "shopping-cart-eks-monitoring"]
+	path = shopping-cart-eks-monitoring
+	url = https://github.com/glenleach/shopping-cart-eks-monitoring.git
+[submodule "nodejs-eks-monitoring"]
+	path = nodejs-eks-monitoring
+	url = https://github.com/glenleach/nodejs-eks-monitoring.git
