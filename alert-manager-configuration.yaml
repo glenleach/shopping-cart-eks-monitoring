@@ -1,17 +1,28 @@
-apiVersion: monitoring.coreos.com/v1alpha1
+apiVersion: monitoring.coreos.com/v1alpha1 
 kind: AlertmanagerConfig
 metadata:
   name: main-rules-alert-config
   namespace: monitoring
 spec:
+  route:
+    receiver: 'email'
+    repeatInterval: 30m
+    routes:
+      - matchers:
+          - name: 'alertname'
+            value: 'HostHighCpuLoad'
+      - matchers:
+          - name: 'alertname'
+            value: 'KubernetesPodCrashLooping'
+        repeatInterval: 10m
   receivers:
-  - name: 'email'
-    emailConfigs:
-    - to: 'nana.janashia@nnsoftware.at'
-      from: 'nana.janashia@nnsoftware.at'
-      smarthost: 'smtp.gmail.com:587'
-      authUsername: 'nana.janashia@nnsoftware.at'
-      authIdentity: 'nana.janashia@nnsoftware.at'
-      authPassword:
-        name: gmail-auth
-        key: password
+    - name: 'email'
+      emailConfigs:
+        - to: 'glenleach@gmail.com'
+          from: 'glenleach@gmail.com'
+          smarthost: 'smtp.gmail.com:587'
+          authUsername: 'glenleach@gmail.com'
+          authIdentity: 'glenleach@gmail.com'
+          authPassword:
+            name: gmail-auth  # referenced in email-secret.yaml
+            key: password     # referenced in email-secret.yaml

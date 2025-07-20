@@ -1,9 +1,30 @@
-name: HostHighCpuLoad
-expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 50
-for: 2m
-labels:
-  severity: warning
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule # For Prometheus alert rules managed by the Prometheus Operator, the kind must be exactly called PrometheusRule
+metadata:
+  name: main-rules  #call this as a general name call it something you can relate too must be unique
   namespace: monitoring
-annotations:
-  description: "CPU load on host is over 50%\n Value = {{ $value }}\n Instance = {{ $labels.instance }}\n"
-  summary: "Host CPU load high"
+  labels: 
+    app: kube-prometheus-stack
+    release: monitoring
+spec:
+  groups:
+  - name: main.rules  #The dot in main.rules is just a naming convention for clarity or organization. You can use dots, dashes, or any valid string—there is no functional difference.
+    rules:
+    - alert: HostHighCpuLoad
+      expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 50
+      for: 2m
+      labels:
+        severity: warning
+        namespace: monitoring
+      annotations:
+        summary: "Host CPU load high"  
+        description: "CPU load on host is over 50%\n Value = {{ $value }}\n Instance = {{ $labels.instance }}\n" 
+    - alert: KubernetesPodCrashLooping
+      expr: kube_pod_container_status_restarts_total > 5  # You can use AI to find this expression or query it in the Prometheus UI. This alert is triggered if the the pod restart more than 5 times
+      for: 0m #This means that the alert will fire immediately. If you want to wait for some time before firing the alert, you can use the "for" clause.
+      labels:
+        severity: critical
+        namespace: monitoring
+      annotations:
+        summary: "Kubernetes pod crash looping" 
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is crash looping\n Value = {{ $value }} more than 5 times."  

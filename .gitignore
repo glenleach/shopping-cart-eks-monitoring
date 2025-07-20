@@ -1,0 +1,4 @@
+terraform/
+prom.yaml
+alertmanager-portforward.log
+.qodo/
