@@ -1,55 +1,51 @@
-### Deploy MS in EKS
-    eksctl create cluster
-    kubectl create namespace online-shop
-    kubectly apply -f ~/Demo-projects/Bootcamp/monitoring/config-microservices.yaml -n online-shop
+# Prometheus Monitoring Projects
 
-# OPTIONAL for Linode
-    chmod 400 ~/Downloads/online-shop-kubeconfig.yaml
-    export KUBECONFIG=~/Downloads/online-shop-kubeconfig.yaml
+This repository serves as the **master controller** for multiple EKS-based monitoring projects using Prometheus and Grafana.
 
+## 📁 Included Subprojects
 
-### Deploy Prometheus Operator Stack
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    helm repo update
-    kubectl create namespace monitoring
-    helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring
-    helm ls
+### 1. [shopping-cart-eks-monitoring](https://github.com/glenleach/shopping-cart-eks-monitoring)
 
-[Link to the chart: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack]
+A Kubernetes microservices demo application deployed on Amazon EKS, featuring full observability with Prometheus, Grafana, and exporters.
 
-### Check Prometheus Stack Pods
-    kubectl get all -n monitoring
+### 2. [nodejs-eks-monitoring](https://github.com/glenleach/nodejs-eks-monitoring)
 
-### Access Prometheus UI
-    kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 -n monitoring &
+A standalone Node.js application deployed on EKS, integrated with Prometheus and Grafana for monitoring and alerting.
 
-### Access Grafana
-    kubectl port-forward svc/monitoring-grafana 8080:80 -n monitoring &
-    user: admin
-    pwd: prom-operator
+## 🔧 Features
 
-### Trigger CPU spike with many requests
+- Automated Prometheus and Grafana deployment via Helm or manifests
+- Metrics collection using Node Exporter and kube-state-metrics
+- Configured dashboards and alerting rules
+- EKS infrastructure setup scripts or Terraform configs (per subproject)
 
-##### Deploy a busybox pod so we can curl our application 
-    kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm
+## 🚀 Getting Started
 
-##### create a script which curls the application endpoint. The endpoint is the external loadbalancer service endpoint
-    for i in $(seq 1 10000)
-    do
-      curl ae4aee0715edc46b988c6ce67121bf57-1459479566.eu-west-3.elb.amazonaws.com > test.txt
-    done
+Clone this repository including submodules:
 
+```bash
+git clone --recurse-submodules https://github.com/glenleach/prometheus-monitoring.git
+```
 
-### Access Alert manager UI
-    kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-alertmanager 9093:9093 &
+If you already cloned without --recurse-submodules, initialize submodules manually:
 
-#### Create cpu stress
-    kubectl delete pod cpu-test; kubectl run cpu-test --image=containerstack/cpustress -- --cpu 4 --timeout 60s --metrics-brief
+git submodule update --init --recursive
+
+To update submodules to latest commits:
+
+git submodule update --remote
+
+---
+
+📚 Additional Resources
+
+Each subproject has its own README with setup instructions, architecture details, and deployment guides.
+📬 Contact
+
+For questions or help, reach out to Glen Leach.
 
 
-### Deploy Redis Exporter
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    helm repo add stable https://charts.helm.sh/stable
-    helm repo update
 
-    helm install redis-exporter prometheus-community/prometheus-redis-exporter -f redis-values.yaml
+---
+
+
